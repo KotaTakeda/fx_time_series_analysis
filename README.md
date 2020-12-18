@@ -1,2 +1,4 @@
-# fx_time_series_analysis
- 
+# fxデータの時系列解析
+
+# 内容
+開発中です．
