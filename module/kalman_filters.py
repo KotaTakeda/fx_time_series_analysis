@@ -12,7 +12,7 @@ x[t] = Mx[t-1] + Gu[t]
 y[t] = Hx[t-1] + w[t]
 """       
 class LinearKalmanFilter:
-    def __init__(self, M, H, G, Q, R, y, x_0, P_0, dt=0.05, delta=1e-3, alpha=1):
+    def __init__(self, M, H, G, Q, R, y, x_0, P_0, dt=0.05, delta=1e-3, alpha=1, storing_forecast=False):
         self.M = M
         self.G = G
         self.H = H
@@ -25,8 +25,10 @@ class LinearKalmanFilter:
         self.trP = []
         self.x_a = x_0
         self.x = []
+        self.x_f_history = []
         self.delta = delta
         self.alpha = alpha # 1以上
+        self.storing_forecast = storing_forecast
         
   # 逐次推定を行う
     def forward_estimation(self):
@@ -62,8 +64,8 @@ class LinearKalmanFilter:
         # self.P = M@self.P@M.T + self.G@self.Q@(self.G.T)
         self.P = M@self.P@M.T + self.Q[0]*self.G@(self.G.T)
 
-        if log:
-            self.x.append(self.x_f)
+        if log or self.storing_forecast:
+            self.x_f_history.append(self.x_f)
     
     # 追加の推定(観測値なし)
     def additional_forecast(self, step):
@@ -81,7 +83,7 @@ x[t] = M(x[t-1]) + G(u[t])
 y[t] = Hx[t-1] + w[t]
 """    
 class ExtendedKalmanFilter:
-    def __init__(self, M, H, G, Q, R, y, x_0, P_0, dt=0.05, delta=1e-3, alpha=1):
+    def __init__(self, M, H, G, Q, R, y, x_0, P_0, dt=0.05, delta=1e-3, alpha=1, storing_forecast=False):
         self.M = M
         self.G = G
         self.H = H
@@ -94,8 +96,11 @@ class ExtendedKalmanFilter:
         self.trP = []
         self.x_a = x_0
         self.x = []
+        self.x_f_history = []
         self.delta = delta
         self.alpha = alpha # 1以上
+        self.storing_forecast = storing_forecast
+
         
   # 逐次推定を行う
     def forward_estimation(self):
@@ -106,9 +111,7 @@ class ExtendedKalmanFilter:
     # 更新/解析
     def _update(self, y_obs):
         self.P = self.alpha*self.P # 乗法的
-        P = self.P
-
-        H = self.H
+        P = self.P; H = self.H
                 
         # Kalman gain
         K = P@H.T@inv(H@P@H.T + self.R)
@@ -139,8 +142,8 @@ class ExtendedKalmanFilter:
         # self.P = JM@self.P@JM.T + self.G@self.Q@(self.G.T)
         self.P = JM@self.P@JM.T + self.Q[0]*self.G@(self.G.T)
 
-        if log:
-            self.x.append(self.x_f)
+        if log or self.storing_forecast:
+            self.x_f_history.append(self.x_f)
     
     # 追加の推定(観測値なし)
     def additional_forecast(self, step):
