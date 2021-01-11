@@ -48,9 +48,21 @@ def cum_std(series):
     """
     累積標準偏差
     args:
-        series: np.ndarray (N,), 時系列データ
+        - series: np.ndarray (N,), 時系列データ
     return:
         cum_std: np.ndaray (N,), 時系列データの累積標準偏差
     """
     cum_std = [np.std(series[:n]) for n in range(series.shape[0])]
     return np.array(cum_std)
+
+def nrmse(true, esti, nomalize_const=1.):
+    """
+    正規化RMSE
+    args:
+        - true: np.ndarray (N,)
+        - esti: np.ndarray (N,)
+        - nomalize_std: float > 0, 正規定数
+    return:
+        nrmse: float
+    """
+    return np.linalg.norm(true-esti, ord=2)/np.sqrt(len(true))/nomalize_const
