@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 prepare_fx_data.ipynb
 0530323973_ds2_final_report.ipynb
+.DS_Store
