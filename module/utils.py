@@ -28,7 +28,7 @@ def log_diff_inv(log_diff_arr):
     """
     return np.exp(np.cumsum(log_diff_arr), dtype=float)
 
-def load_fx_data(instrument_list, data_kind='train'):
+def load_fx_data(instrument_list, data_kind='train', path_to_data='..'):
     """
     fxデータをローカルから読み込み．
     args:
@@ -39,7 +39,7 @@ def load_fx_data(instrument_list, data_kind='train'):
     """
     df_dict = {}
     for instrument in instrument_list:
-        df = pd.read_csv(f'data/fx_data_{instrument}_{data_kind}', index_col=0, header=0)
+        df = pd.read_csv(f'{path_to_data}/data/fx_data_{instrument}_{data_kind}', index_col=0, header=0)
         df.index = pd.to_datetime(df.index)
         df_dict[instrument] = df
     return df_dict
@@ -65,4 +65,5 @@ def nrmse(true, esti, nomalize_const=1.):
     return:
         nrmse: float
     """
+    true = true.reshape(-1,); esti = esti.reshape(-1,)
     return np.linalg.norm(true-esti, ord=2)/np.sqrt(len(true))/nomalize_const
