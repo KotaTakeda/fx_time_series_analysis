@@ -41,5 +41,8 @@ ARMAモデルを使ってfxデータの状態推定，フィッティングを�
 ### `rnn_to_fx.ipynb`
 RNNを使ってfxデータにフィッティング，予測を行います．
 
+# LICENCE
+パブリックドメインです．
+
 # 参考
 - [Kalman Filter](https://github.com/KotaTakeda/rccs_online_school)
