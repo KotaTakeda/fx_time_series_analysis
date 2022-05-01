@@ -44,7 +44,7 @@ ARMAモデルを使ってfxデータの状態推定，フィッティングを�
 RNNを使ってfxデータにフィッティング，予測を行います．
 
 # LICENCE
-パブリックドメインです．
+https://github.com/KotaTakeda/fx_time_series_analysis/blob/main/LICENCE
 
 # 参考
 - [Kalman Filter](https://github.com/KotaTakeda/rccs_online_school)
